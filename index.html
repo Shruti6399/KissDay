@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiss Day 💋</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg1:#ffd1dc;
+  --bg2:#ffb6c1;
+  --accent:#ff4d6d;
+  --card:#fff;
+}
+
+body.pastel {
+  --bg1:#d0f4de;
+  --bg2:#fef9c3;
+  --accent:#ff85a2;
+}
+
+html,body{
+  margin:0;
+  height:100%;
+  font-family:'Pacifico',cursive;
+}
+
+.page{
+  display:none;
+  height:100vh;
+  background:linear-gradient(var(--bg1),var(--bg2));
+  position:relative;
+  text-align:center;
+}
+
+.page.active{display:block}
+
+/* START PAGE */
+.characters{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  padding:0 5%;
+}
+
+.character{
+  font-size:120px;
+}
+
+.center-text{
+  position:absolute;
+  top:45%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:var(--card);
+  color:var(--accent);
+  padding:20px;
+  border-radius:20px;
+  cursor:pointer;
+  animation:pulse 1.5s infinite;
+  max-width:90%;
+}
+
+@keyframes pulse{
+  0%{transform:translate(-50%,-50%) scale(1)}
+  50%{transform:translate(-50%,-50%) scale(1.05)}
+  100%{transform:translate(-50%,-50%) scale(1)}
+}
+
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  justify-content:center;
+  align-items:center;
+}
+
+.modal-box{
+  background:var(--card);
+  padding:25px;
+  border-radius:20px;
+  width:90%;
+  max-width:320px;
+  color:var(--accent);
+}
+
+.option{
+  width:100%;
+  margin:8px 0;
+  padding:10px;
+  border-radius:14px;
+  border:none;
+  background:var(--accent);
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+}
+
+/* SUCCESS */
+.kiss-doodle{
+  font-size:150px;
+  margin-top:15%;
+}
+
+.message{
+  margin:20px auto;
+  background:var(--card);
+  color:var(--accent);
+  padding:20px;
+  border-radius:20px;
+  width:85%;
+  font-size:26px;
+}
+
+/* WRONG */
+.wrong-msg{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:var(--card);
+  color:var(--accent);
+  padding:25px;
+  border-radius:20px;
+  width:85%;
+  font-size:24px;
+}
+
+/* FLOATING HEARTS */
+.heart{
+  position:fixed;
+  bottom:-20px;
+  font-size:24px;
+  animation:floatUp 6s linear infinite;
+}
+
+@keyframes floatUp{
+  to{transform:translateY(-110vh);opacity:0}
+}
+
+/* THEME BUTTON */
+.theme-btn{
+  position:fixed;
+  top:10px;
+  right:10px;
+  background:var(--card);
+  padding:10px;
+  border-radius:50%;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="theme-btn" onclick="toggleTheme()">🌸</div>
+
+<!-- START -->
+<div id="startPage" class="page active">
+  <div class="center-text" onclick="openModal()">
+    Click below to make the kiss complete 💞
+  </div>
+
+  <div class="characters">
+    <div class="character">👩‍🎨</div>
+    <div class="character">🧑‍🎨</div>
+  </div>
+</div>
+
+<!-- QUESTION -->
+<div id="modal" class="modal">
+  <div class="modal-box">
+    <h3>What is my favorite body part of yours to kiss? 💋</h3>
+    <button class="option" onclick="wrong()">Neck</button>
+    <button class="option" onclick="wrong()">Lips</button>
+    <button class="option" onclick="correct()">Nu......</button>
+    <button class="option" onclick="wrong()">Forehead</button>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div id="successPage" class="page">
+  <div class="kiss-doodle">👩‍❤️‍💋‍👨</div>
+  <div class="message">
+    💋 Happy Kiss Day 💋 <br>
+    You complete my kiss ❤️
+  </div>
+</div>
+
+<!-- WRONG -->
+<div id="wrongPage" class="page">
+  <div class="wrong-msg">
+    I love this part as well 🥰 <br>
+    But there is one part I love the most 😉
+  </div>
+</div>
+
+<audio id="kissSound">
+  <source src="https://www.soundjay.com/human/kiss-01.mp3">
+</audio>
+
+<script>
+function openModal(){
+  document.getElementById("modal").style.display="flex";
+}
+
+function correct(){
+  document.getElementById("kissSound").play();
+  changePage("successPage");
+}
+
+function wrong(){
+  changePage("wrongPage");
+}
+
+function changePage(id){
+  document.getElementById("modal").style.display="none";
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+function toggleTheme(){
+  document.body.classList.toggle("pastel");
+}
+
+/* Floating hearts */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerText=Math.random()>0.5?"💖":"💋";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},500);
+</script>
+
+</body>
+</html>
